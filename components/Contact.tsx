@@ -2,6 +2,7 @@
 
 import { m, useReducedMotion } from "framer-motion";
 import { ContactForm } from "@/components/ContactForm";
+import { LightPillar } from "@/components/LightPillar";
 import { Reveal } from "@/components/Reveal";
 import { Rule } from "@/components/Rule";
 import { SplitWords } from "@/components/SplitWords";
@@ -14,7 +15,23 @@ export function Contact() {
   const rm = useReducedMotion() ?? false;
 
   return (
-    <section id="contato" aria-labelledby="contato-title" className="bg-ink">
+    <section
+      id="contato"
+      aria-labelledby="contato-title"
+      className="relative isolate overflow-hidden bg-ink"
+    >
+      <LightPillar
+        topColor="#9AA75F"
+        bottomColor="#3F4A1E"
+        intensity={0.44}
+        glowAmount={0.0032}
+        pillarWidth={2.6}
+        pillarRotation={14}
+        rotationSpeed={0.18}
+        noiseIntensity={0.35}
+        scrim="linear-gradient(260deg, rgba(14,17,15,0.60) 0%, rgba(14,17,15,0.52) 45%, rgba(14,17,15,0.3) 72%, rgba(14,17,15,0.08) 100%)"
+      />
+
       <Rule />
 
       {/* Área de silêncio: só o fio, o marcador e preto. */}

@@ -3,6 +3,7 @@
 import { m, useReducedMotion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/Button";
+import { LightPillar } from "@/components/LightPillar";
 import { PanelOperacao } from "@/components/PanelOperacao";
 import { Rule } from "@/components/Rule";
 import { SplitWords } from "@/components/SplitWords";
@@ -15,7 +16,23 @@ export function Hero() {
   const item = fadeUp(rm, 16, 0.55);
 
   return (
-    <section id="inicio" aria-labelledby="hero-title" className="bg-ink">
+    <section
+      id="inicio"
+      aria-labelledby="hero-title"
+      className="relative isolate overflow-hidden bg-ink"
+    >
+      <LightPillar
+        topColor="#9AA75F"
+        bottomColor="#3F4A1E"
+        intensity={0.52}
+        glowAmount={0.0038}
+        pillarWidth={2.2}
+        pillarRotation={-16}
+        rotationSpeed={0.22}
+        noiseIntensity={0.35}
+        scrim="linear-gradient(100deg, rgba(14,17,15,0.62) 0%, rgba(14,17,15,0.56) 42%, rgba(14,17,15,0.34) 64%, rgba(14,17,15,0.06) 100%)"
+      />
+
       <Rule />
 
       <div className="mx-auto max-w-container px-5 pb-4 pt-6 sm:px-6 lg:px-8 lg:pb-10 lg:pt-12">
