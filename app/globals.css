@@ -3,25 +3,240 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html {
+  scroll-behavior: smooth;
+  /* Altura real do cabeçalho fixo (h-14 = 56px) + 12px de respiro. */
+  scroll-padding-top: 68px;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* A partir de md o cabeçalho passa a h-16 = 64px. */
+@media (min-width: 768px) {
+  html {
+    scroll-padding-top: 76px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Rede de segurança de produção. Nunca trocar por hidden: hidden cria um
+     contexto de rolagem e quebra o position: sticky da nav. */
+  overflow-x: clip;
+  background-color: #0e110f;
+  color: #eee9de;
+}
+
+::selection {
+  background: rgba(154, 167, 95, 0.3);
+  color: #eee9de;
+}
+
+/* Anel de foco sobre tinta. */
+:focus-visible {
+  outline: 2px solid #9aa75f;
+  outline-offset: 2px;
+  border-radius: 0;
+}
+
+/* Anel de foco sobre papel cáqui: o contraste mais alto disponível ali. */
+.on-paper ::selection {
+  background: rgba(63, 74, 30, 0.26);
+  color: #0e110f;
+}
+
+.on-paper :focus-visible {
+  outline: 2px solid #0e110f;
+  outline-offset: 3px;
+}
+
+@layer components {
+  /* Escala tipográfica. A largura (font-stretch) vem sempre das
+     utilitárias .wdth-*, nunca daqui. */
+  .t-display {
+    font-size: clamp(2.25rem, 1.05rem + 4.1vw, 3.75rem);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.022em;
+  }
+
+  .t-h2 {
+    font-size: clamp(1.75rem, 1rem + 3.1vw, 3.5rem);
+    font-weight: 800;
+    line-height: 0.94;
+    letter-spacing: -0.02em;
+  }
+
+  .t-h3 {
+    font-size: clamp(1.25rem, 1.05rem + 0.85vw, 1.75rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.012em;
+  }
+
+  .t-lead {
+    font-size: clamp(1.0625rem, 1rem + 0.42vw, 1.3125rem);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+  }
+
+  .t-body {
+    font-size: clamp(1rem, 0.96rem + 0.14vw, 1.0625rem);
+    line-height: 1.6;
+  }
+
+  .t-label {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .t-kv {
+    font-size: 13px;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .t-stat {
+    font-size: clamp(1.625rem, 1rem + 2.6vw, 3rem);
+    font-weight: 500;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .t-stat-lg {
+    font-size: clamp(2.5rem, 1.2rem + 5.8vw, 4.25rem);
+    font-weight: 500;
+    line-height: 0.88;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Figura principal do painel do hero. O teto do clamp é a trava de
+     overflow: 14 caracteres x 0.6ch x 40px = 336px, dentro da coluna de
+     381px do lg. Não subir de 2.5rem sem refazer essa conta. */
+  .t-figure {
+    font-size: clamp(1.75rem, 1.1rem + 2.6vw, 2.5rem);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .t-cond {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .t-wordmark {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  @media (min-width: 1024px) {
+    .t-wordmark {
+      font-size: 22px;
+    }
+  }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Máscara das linhas do h1: a linha entra por baixo do próprio corte. */
+  .mask-line {
+    overflow: hidden;
+    padding-bottom: 0.16em;
+    margin-bottom: -0.16em;
+  }
+
+  /* Fio de 1px que se desenha da esquerda para a direita. */
+  .rule-x {
+    transform-origin: left;
+  }
+
+  /* Condutor pontilhado: gradiente repetido, não caracteres de ponto. */
+  .dot-leader {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  .dot-leader-fill {
+    flex: 1 1 auto;
+    min-width: 16px;
+    align-self: stretch;
+    background-image: repeating-linear-gradient(
+      to right,
+      currentColor 0 1px,
+      transparent 1px 5px
+    );
+    background-size: 100% 1px;
+    background-repeat: repeat-x;
+    background-position: 0 calc(100% - 4px);
+    opacity: 0.45;
+  }
+
+  /* Abaixo de 480px a linha quebra em duas: o condutor nunca empurra a
+     página e nunca gera overflow, mesmo no valor mais longo da ficha. */
+  @media (max-width: 479px) {
+    .dot-leader {
+      display: block;
+    }
+    .dot-leader-fill {
+      display: none;
+    }
+    .dot-leader-value {
+      display: block;
+      margin-top: 2px;
+      text-align: left;
+    }
+  }
+
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 6%,
+      #000 94%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 6%,
+      #000 94%,
+      transparent
+    );
+  }
+}
+
+/* Rede de segurança: todo loop de CSS para sob movimento reduzido. */
+@media (prefers-reduced-motion: reduce) {
+  .motion-loop {
+    animation: none !important;
+  }
+  .mask-fade-x {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }
